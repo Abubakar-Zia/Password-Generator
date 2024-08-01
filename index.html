@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;700&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <link rel="icon" href="Images/pngegg.png" type="image/png">
+
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Password Generator</h1>
+            <p>Create a secure, random password</p>
+        </header>
+        <main>
+            <button id="generate-btn">Generate Password</button>
+            <div id="result">
+                <span id="password"></span>
+                <button id="copy-btn">Copy</button>
+            </div>
+        </main>
+        <footer>
+            <p>&copy; 2024 Password Generator</p>
+        </footer>
+    </div>
+    <script>
+        function generatePassword() {
+            const specialChars = "!@#$%^&*()_+[]{}|;:,.<>?";
+            const numbers = "0123456789";
+            const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const lowercase = "abcdefghijklmnopqrstuvwxyz";
+
+            let password = "";
+
+            while (password.length < 24) {
+                for (let i = 0; i < 3; i++) {
+                    password += specialChars[Math.floor(Math.random() * specialChars.length)];
+                }
+                for (let i = 0; i < 3; i++) {
+                    password += numbers[Math.floor(Math.random() * numbers.length)];
+                }
+                for (let i = 0; i < 3; i++) {
+                    password += uppercase[Math.floor(Math.random() * uppercase.length)];
+                }
+                for (let i = 0; i < 3; i++) {
+                    password += lowercase[Math.floor(Math.random() * lowercase.length)];
+                }
+            }
+
+            // Ensure the password is exactly 24 characters long
+            return password.slice(0, 24);
+        }
+
+        document.getElementById("generate-btn").addEventListener("click", () => {
+            const password = generatePassword();
+            document.getElementById("password").textContent = password;
+        });
+
+        document.getElementById("copy-btn").addEventListener("click", () => {
+            const password = document.getElementById("password").textContent;
+            const copyBtn = document.getElementById("copy-btn");
+            
+            navigator.clipboard.writeText(password).then(() => {
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = "Copied ✓";
+                copyBtn.disabled = true;
+                
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.disabled = false;
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
